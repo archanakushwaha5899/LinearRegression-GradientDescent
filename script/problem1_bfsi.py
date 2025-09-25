@@ -1,9 +1,10 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import os
 
-#----------------------------Gradient Descent Linear Regression
+# ---------------------------- Gradient Descent Linear Regression
 class LinearRegressionGD:
     def __init__(self, learning_rate=0.000001, iterations=2000):
         self.learning_rate = learning_rate
@@ -31,13 +32,19 @@ class LinearRegressionGD:
     def predict(self, X):
         return self.m * X + self.c
 
-
-#--------------------Dataset generation
+# -------------------- Dataset generation
 np.random.seed(0)
-X = np.random.randint(300, 900, 500)           # Credit Scores
-y = 20 - 0.015 * X + np.random.normal(0, 1, 500)  # Interest Rates (decreasing with credit score)
+X = np.random.randint(300, 900, 500)           
+y = 20 - 0.015 * X + np.random.normal(0, 1, 500)  
 
-#------------------- Create outputs folder if not exist
+# -------------------- Convert to DataFrame
+dataset = pd.DataFrame({"Credit Score": X, "Interest Rate": y})
+
+print("---- BFSI Dataset (first 20 rows) ----")
+print(dataset.head(20))  
+
+
+# ------------------- Create outputs folder if not exist
 os.makedirs("outputs", exist_ok=True)
 
 # ----------------Train model

@@ -1,9 +1,10 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import os
 
-# --------------------Gradient Descent Linear Regression
+# -------------------- Gradient Descent Linear Regression
 class LinearRegressionGD:
     def __init__(self, learning_rate=0.00001, iterations=2000):
         self.learning_rate = learning_rate
@@ -28,21 +29,27 @@ class LinearRegressionGD:
     def predict(self, X):
         return self.m * X + self.c
 
-
-# -----------------------Dataset generation
+# ----------------------- Dataset generation
 np.random.seed(0)
 X = np.random.randint(1, 21, 400)                     # Years of Experience
 y = 500 + 200 * X + np.random.normal(0, 100, 400)    # Monthly Billing Rate with noise
 
-# --------------------Create outputs folder if not exist
+# -------------------- Convert to DataFrame 
+df = pd.DataFrame({"Years of Experience": X, "Monthly Billing Rate": y.astype(int)})
+
+# Print first 20 rows
+print("---- IT/ITES Dataset (first 20 rows) ----")
+print(df.head(20))
+
+# -------------------- Create outputs folder if not exist
 os.makedirs("outputs", exist_ok=True)
 
-# ------------------Train model
+# ------------------ Train model
 model = LinearRegressionGD(learning_rate=0.00001, iterations=2000)
 model.fit(X, y)
 y_pred = model.predict(X)
 
-# ---------------Evaluation
+# --------------- Evaluation
 mae = mean_absolute_error(y, y_pred)
 mse = mean_squared_error(y, y_pred)
 rmse = np.sqrt(mse)
@@ -52,7 +59,7 @@ print("---- IT/ITES Problem ----")
 print(f"Equation: y = {model.m:.4f}x + {model.c:.4f}")
 print(f"MAE: {mae:.4f}, MSE: {mse:.4f}, RMSE: {rmse:.4f}, R²: {r2:.4f}")
 
-# ---------------Scatter plot + regression line
+# --------------- Scatter plot + regression line
 plt.figure(figsize=(6,4))
 plt.scatter(X, y, color="blue", alpha=0.5, label="Actual")
 plt.plot(X, y_pred, color="red", label="Regression line")
@@ -63,8 +70,7 @@ plt.legend()
 plt.savefig("outputs/problem2_scatter.png")
 plt.close()
 
-# ----------Loss curve
-
+# ---------- Loss curve
 plt.figure(figsize=(6,4))
 plt.plot(range(len(model.loss_history)), model.loss_history, color="green")
 plt.xlabel("Iterations")
