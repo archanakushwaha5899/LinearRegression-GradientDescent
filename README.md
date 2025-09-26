@@ -118,10 +118,10 @@ Each problem uses a single predictor variable to understand core mechanics of li
 
 **Outputs:**  
 #### Scatter Plot + Regression Line
-![Logistics Scatter](outputs/problem5_scatter.png)
+![Logistics Scatter](outputs/problem5_logistics_scatter.png)
 
 #### Loss Curve
-![Logistics Loss](outputs/problem5_loss.png)
+![Logistics Loss](outputs/problem5_logistics_loss.png)
 
 **Business Insight:** Delivery time increases with distance, but other factors like traffic may also influence.
 
