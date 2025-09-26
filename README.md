@@ -22,10 +22,10 @@ Each problem uses a single predictor variable to understand core mechanics of li
 
 **Outputs:**  
 #### Scatter Plot + Regression Line
-![BFSI Scatter](outputs/problem1_scatter.png)
+![BFSI Scatter](outputs/problem1_scatter_updated.png)
 
 #### Loss Curve
-![BFSI Loss](outputs/problem1_loss.png)
+![BFSI Loss](outputs/problem1_loss_updated.png)
 
 **Business Insight:** Higher credit score leads to lower interest rate, showing a strong negative correlation.
 
