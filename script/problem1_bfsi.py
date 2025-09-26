@@ -6,7 +6,7 @@ import os
 
 # ---------------------------- Gradient Descent Linear Regression
 class LinearRegressionGD:
-    def __init__(self, learning_rate=0.000001, iterations=2000):
+    def __init__(self, learning_rate=0.00001, iterations=5000):
         self.learning_rate = learning_rate
         self.iterations = iterations
         self.m = 0
@@ -37,20 +37,28 @@ np.random.seed(0)
 X = np.random.randint(300, 900, 500)           
 y = 20 - 0.015 * X + np.random.normal(0, 1, 500)  
 
+# -------------------- Scaling (to improve convergence)
+X_scaled = (X - X.mean()) / X.std()
+y_scaled = (y - y.mean()) / y.std()
+
 # -------------------- Convert to DataFrame
 dataset = pd.DataFrame({"Credit Score": X, "Interest Rate": y})
 
 print("---- BFSI Dataset (first 20 rows) ----")
 print(dataset.head(20))  
 
-
 # ------------------- Create outputs folder if not exist
 os.makedirs("outputs", exist_ok=True)
 
-# ----------------Train model
-model = LinearRegressionGD(learning_rate=0.000001, iterations=2000)
-model.fit(X, y)
-y_pred = model.predict(X)
+# ----------------Train model on scaled data
+model = LinearRegressionGD(learning_rate=0.00001, iterations=5000)
+model.fit(X_scaled, y_scaled)
+
+# Predictions (scaled)
+y_pred_scaled = model.predict(X_scaled)
+
+# Convert predictions back to original scale
+y_pred = y_pred_scaled * y.std() + y.mean()
 
 # ---------------------Evaluation
 mae = mean_absolute_error(y, y_pred)
@@ -59,7 +67,7 @@ rmse = np.sqrt(mse)
 r2 = r2_score(y, y_pred)
 
 print("---- BFSI Problem ----")
-print(f"Equation: y = {model.m:.4f}x + {model.c:.4f}")
+print(f"Equation: y = {model.m:.4f}x + {model.c:.4f} (scaled)")
 print(f"MAE: {mae:.4f}, MSE: {mse:.4f}, RMSE: {rmse:.4f}, R²: {r2:.4f}")
 
 # ----------------------Scatter plot + regression line
@@ -70,7 +78,7 @@ plt.xlabel("Credit Score")
 plt.ylabel("Interest Rate (%)")
 plt.title("BFSI: Credit Score vs Interest Rate")
 plt.legend()
-plt.savefig("outputs/problem1_scatter.png")
+plt.savefig("outputs/problem1_scatter_updated.png")
 plt.close()
 
 # ----------------Loss curve
@@ -79,5 +87,5 @@ plt.plot(range(len(model.loss_history)), model.loss_history, color="green")
 plt.xlabel("Iterations")
 plt.ylabel("Loss (MSE)")
 plt.title("BFSI: Loss Curve")
-plt.savefig("outputs/problem1_loss.png")
+plt.savefig("outputs/problem1_loss_updated.png")
 plt.close()
